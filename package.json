@@ -1,0 +1,21 @@
+{
+  "name": "restapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "Pavithra Agraharam",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "sequelize": "^6.19.2",
+    "sqlite3": "^5.0.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16"
+  }
+}
