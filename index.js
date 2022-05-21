@@ -7,7 +7,7 @@ import sequelize from './db/boards.js';
 
 sequelize.sync();
 
-const app = express();
+const app = express({sync:true});
 const PORT = 5000;
 
 app.use(bodyParser.json());

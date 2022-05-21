@@ -1,6 +1,6 @@
 import Sequelize from "sequelize";
 
-const sequelize = new Sequelize('boards', 'user', 'pass', {
+const sequelize = new Sequelize('boards', 'email', 'pass', {
     dialect: 'sqlite',
     host: 'boards.sqlite3'
 });
