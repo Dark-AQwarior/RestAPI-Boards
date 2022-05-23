@@ -170,48 +170,40 @@ function topArticles(numOfTitles){
                     max = articleCommentNum[i];
                 }
             }
-            var dup = hasAllUniqueChars(articlesComDuplicate);
+            var dup = returnDup1(articlesComDuplicate);
             const index = articlesComDuplicate.indexOf(max);
             if(response.data.data[index].title != null){
                 if(index == dup && temp == 0){
-                    dup = hasAllUniqueChars2(articlesComDuplicate);
+                    dup = returnDup2(articlesComDuplicate);
                     if(temp == 0){
                         if(response.data.data[index].title < response.data.data[dup].title){
                             console.log(response.data.data[index].title);
-                            if (index > -1) {
-                                articleCommentNum.splice(index, 1); 
-                            }
+                            articleCommentNum = removeFromArray(articleCommentNum,index);
                             x = 2;
                         } 
                         else{
                             console.log(response.data.data[dup].title); 
-                            if (dup > -1) {
-                                articleCommentNum.splice(dup, 1); 
-                            }
+                            articleCommentNum = removeFromArray(articleCommentNum,dup);
                             x = 3;
                         }
                         temp = 1;
                     }
                 }else{
                     if(temp == 1){
-                        dup = hasAllUniqueChars2(articlesComDuplicate);
+                        dup = returnDup2(articlesComDuplicate);
                         if(x == 2){
                             console.log(response.data.data[dup].title); 
-                            if (dup > -1) {
-                                articleCommentNum.splice(dup, 1); 
-                            }
+                            articleCommentNum = removeFromArray(articleCommentNum,dup);
                         }
                         if(x == 3){
                             console.log(response.data.data[index].title);
-                            if (index > -1) {
-                                articleCommentNum.splice(index, 1); 
-                            }
+                            articleCommentNum = removeFromArray(articleCommentNum,index);
                         }
                     } else{  
                         console.log(response.data.data[index].title);
                     }
                 }
-            }else{
+            } else{
                 if(response.data.data[index].story_title != null){
                     console.log(response.data.data[index].story_title);
                 } 
@@ -223,10 +215,10 @@ function topArticles(numOfTitles){
     })
 }
 
-function hasAllUniqueChars( s ){ 
-    for(let c=0; c<s.length; c++){
-        for(let d=c+1; d<s.length; d++){
-            if((s[c]==s[d])){
+function returnDup1(arr){ 
+    for(let c=0; c<arr.length; c++){
+        for(let d=c+1; d<arr.length; d++){
+            if((arr[c]==arr[d])){
                     return c;
             }
         }
@@ -234,10 +226,10 @@ function hasAllUniqueChars( s ){
     return true;
 }
 
-function hasAllUniqueChars2( s ){ 
-    for(let c=0; c<s.length; c++){
-        for(let d=c+1; d<s.length; d++){
-            if((s[c]==s[d])){
+function returnDup2(arr){ 
+    for(let c=0; c<arr.length; c++){
+        for(let d=c+1; d<arr.length; d++){
+            if((arr[c]==arr[d])){
                     return d;
             }
         }
