@@ -19,6 +19,7 @@ const db = new sqlite3.Database('boards.sqlite3',sqlite3.OPEN_READWRITE); // Ope
 
 // Array of number of comments
 let articleCommentNum = []
+let articlesComDuplicate = []
 
 // Simple get API
 router.get('/', (req,res) => {
@@ -159,6 +160,7 @@ function topArticles(numOfTitles){
         var num = response.data.per_page, temp = 0;
         for(var i = 0; num > 0; i++,num--){
             articleCommentNum.push(response.data.data[i].num_comments);
+            articlesComDuplicate.push(response.data.data[i].num_comments);
         }
         // Logic to print the top articles sorted based on the descending order of the comment_count in the API URL.
         while(numOfTitles > 0){
@@ -168,23 +170,12 @@ function topArticles(numOfTitles){
                     max = articleCommentNum[i];
                 }
             }
-            const index = articleCommentNum.indexOf(max);
-            if(temp == 0){
-                if(response.data.data[index].title != null){
-                    console.log(response.data.data[index].title); 
-                }else{
-                    if(response.data.data[index].story_title != null){
-                        console.log(response.data.data[index].story_title);
-                    }
-                }
-                temp = 1;
+            const index = articlesComDuplicate.indexOf(max);
+            if(response.data.data[index].title != null){
+                console.log(response.data.data[index].title); 
             }else{
-                if(response.data.data[index+1].title != null){
-                    console.log(response.data.data[index+1].title); 
-                }else{
-                    if(response.data.data[index+1].story_title != null){
-                        console.log(response.data.data[index+1].story_title);
-                    }
+                if(response.data.data[index].story_title != null){
+                    console.log(response.data.data[index].story_title);
                 }
             }
             // Removing the maximum number from array to find the next maximum number for the next article.
