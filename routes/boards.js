@@ -179,8 +179,9 @@ function topArticles(numOfTitles){
                 }
             }
             // Removing the maximum number from array to find the next maximum number for the next article.
-            if (index > -1) {
-                articleCommentNum.splice(index, 1); 
+            const index1 = articleCommentNum.indexOf(max);
+            if (index1 > -1) {
+                articleCommentNum.splice(index1, 1); 
             }
             numOfTitles--;
         }
