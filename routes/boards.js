@@ -157,7 +157,7 @@ function verifyToken(req, res, next){
 function topArticles(numOfTitles){
     responseMSG(numOfTitles).then(response => {
         // Pushing all the number of comments into the array -> articleCommentNum, for further use.
-        var num = response.data.per_page, temp = 0;
+        var num = response.data.per_page, temp = 0, x;
         for(var i = 0; num > 0; i++,num--){
             articleCommentNum.push(response.data.data[i].num_comments);
             articlesComDuplicate.push(response.data.data[i].num_comments);
@@ -170,22 +170,86 @@ function topArticles(numOfTitles){
                     max = articleCommentNum[i];
                 }
             }
+            var dup = hasAllUniqueChars(articlesComDuplicate);
             const index = articlesComDuplicate.indexOf(max);
             if(response.data.data[index].title != null){
-                console.log(response.data.data[index].title); 
+                if(index == dup && temp == 0){
+                    dup = hasAllUniqueChars2(articlesComDuplicate);
+                    if(temp == 0){
+                        if(response.data.data[index].title < response.data.data[dup].title){
+                            console.log(response.data.data[index].title);
+                            if (index > -1) {
+                                articleCommentNum.splice(index, 1); 
+                            }
+                            x = 2;
+                        } 
+                        else{
+                            console.log(response.data.data[dup].title); 
+                            if (dup > -1) {
+                                articleCommentNum.splice(dup, 1); 
+                            }
+                            x = 3;
+                        }
+                        temp = 1;
+                    }
+                }else{
+                    if(temp == 1){
+                        dup = hasAllUniqueChars2(articlesComDuplicate);
+                        if(x == 2){
+                            console.log(response.data.data[dup].title); 
+                            if (dup > -1) {
+                                articleCommentNum.splice(dup, 1); 
+                            }
+                        }
+                        if(x == 3){
+                            console.log(response.data.data[index].title);
+                            if (index > -1) {
+                                articleCommentNum.splice(index, 1); 
+                            }
+                        }
+                    } else{  
+                        console.log(response.data.data[index].title);
+                    }
+                }
             }else{
                 if(response.data.data[index].story_title != null){
                     console.log(response.data.data[index].story_title);
-                }
+                } 
             }
             // Removing the maximum number from array to find the next maximum number for the next article.
-            const index1 = articleCommentNum.indexOf(max);
-            if (index1 > -1) {
-                articleCommentNum.splice(index1, 1); 
-            }
+            articleCommentNum = removeFromArray(articleCommentNum, max);
             numOfTitles--;
         }
     })
 }
 
+function hasAllUniqueChars( s ){ 
+    for(let c=0; c<s.length; c++){
+        for(let d=c+1; d<s.length; d++){
+            if((s[c]==s[d])){
+                    return c;
+            }
+        }
+    }
+    return true;
+}
+
+function hasAllUniqueChars2( s ){ 
+    for(let c=0; c<s.length; c++){
+        for(let d=c+1; d<s.length; d++){
+            if((s[c]==s[d])){
+                    return d;
+            }
+        }
+    }
+    return true;
+}
+
+function removeFromArray(array, index){
+    const index1 = array.indexOf(index);
+    if (index1 > -1) {
+        array.splice(index1, 1); 
+    }
+    return array;
+}
 export default router;
